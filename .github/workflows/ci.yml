@@ -1,0 +1,102 @@
+name: Build Raylib Game
+
+on: [push]
+
+env:
+  RAYLIB_VERSION: 4.5.0
+  EMSCRIPTEN_VERSION: 3.1.34
+  EMSCRIPTEN_CACHE_FOLDER: emsdk-cache
+  GAME_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  build-mac:
+    runs-on: macos-12
+    if: contains(github.event.head_commit.message, 'skip-mac') == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # Mac installation of Raylib is similar, but we need to copy the static library and headers into the repo
+      - name: Install Raylib on Mac
+        run: |
+          curl -L https://github.com/raysan5/raylib/releases/download/${{ env.RAYLIB_VERSION }}/raylib-${{ env.RAYLIB_VERSION }}_macos.tar.gz --output raylib.tar.gz
+          tar -xzvf raylib.tar.gz
+          cp raylib-${{ env.RAYLIB_VERSION }}_macos/lib/* .
+          cp raylib-${{ env.RAYLIB_VERSION }}_macos/include/* ./src
+      # We build with our specific CI build command, which statically links Raylib
+      - name: Build on Mac
+        run: make build-mac-ci
+      # We then zip the game, this is needed in Mac so the final .app file is executable
+      - name: Zip game build on Mac
+        run: cd build && zip -r ${{ env.GAME_NAME }}.zip *
+      # Upload the artifacts for each OS
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.GAME_NAME }}-${{ runner.os }}
+          path: build/${{ env.GAME_NAME }}.zip
+
+  build-win:
+    runs-on: windows-2022
+    if: contains(github.event.head_commit.message, 'skip-win') == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # We download the prepackaged version of Raylib that works for the 64bit MinGW compiler
+      - name: Install Raylib on Windows
+        run: |
+          curl -L https://github.com/raysan5/raylib/releases/download/${{ env.RAYLIB_VERSION }}/raylib-${{ env.RAYLIB_VERSION }}_win64_mingw-w64.zip --output raylib.zip
+          7z x raylib.zip -oraylibwrapper
+          mv raylibwrapper\raylib-${{ env.RAYLIB_VERSION }}_win64_mingw-w64 raylib
+      # We build with our specific CI build command, which statically links Raylib
+      # First, we set the WORKSPACE_DIR environment variable to the current directory, but with the correct path separators
+      - name: Build on Windows
+        run: |
+          $env:WORKSPACE_DIR = ${env:GITHUB_WORKSPACE}.Replace("\", "/")
+          make build-win-ci
+      # We then zip the game with 7z as it's already installed in the shared runner
+      - name: Zip game build on Mac
+        run: cd build && 7z a -tzip ${{ env.GAME_NAME }}.zip *
+      # Upload the artifacts for each OS
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.GAME_NAME }}-${{ runner.os }}
+          path: build/${{ env.GAME_NAME }}.zip
+
+  build-web:
+    runs-on: ubuntu-22.04
+    if: contains(github.event.head_commit.message, 'skip-web') == false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # The setup-emsdk builds but app doesn't work, and the default Ubuntu version throws an error
+      # So we install the way emscripten recommends
+      - name: Install Emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install ${{ env.EMSCRIPTEN_VERSION }}
+          ./emsdk activate ${{ env.EMSCRIPTEN_VERSION }}
+      # We download the prepackaged version of Raylib that works for emscripten
+      # If we didn't download this version, we would need to compile Raylib for HTML5 builds
+      - name: Install Raylib for Web
+        run: |
+          curl -L https://github.com/raysan5/raylib/releases/download/${{ env.RAYLIB_VERSION }}/raylib-${{ env.RAYLIB_VERSION }}_webassembly.zip --output raylib.zip
+          unzip raylib.zip -d raylibwrapper
+          mv raylibwrapper/raylib-${{ env.RAYLIB_VERSION }}_webassembly raylib
+      # We build with our specific CI build command, which statically links Raylib
+      - name: Build for Web
+        run: |
+          source ./emsdk/emsdk_env.sh
+          make build-web
+        env:
+          WORKSPACE_DIR: ${{ github.workspace }}
+      # We then zip the game
+      - name: Zip game build for Web
+        run: cd build && zip -r ${{ env.GAME_NAME }}.zip *
+      # Upload the artifacts for each OS
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.GAME_NAME }}-Web
+          path: build/${{ env.GAME_NAME }}.zip
