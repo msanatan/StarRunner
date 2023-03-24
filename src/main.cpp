@@ -7,6 +7,7 @@
 #endif
 
 // Global variables
+static const Color backgroundColor = Color({32, 33, 63});
 static Camera3D camera = {0};
 static Player player = Player(0.0f, 0.0f, 0.0f);
 static Vector3 playerVelocity = {0.0f, 0.0f, 0.0f};
@@ -32,7 +33,7 @@ void UpdateGame()
 void DrawGame()
 {
   BeginDrawing();
-  ClearBackground(BLACK);
+  ClearBackground(backgroundColor);
   BeginMode3D(camera);
   player.draw();
   EndMode3D();
