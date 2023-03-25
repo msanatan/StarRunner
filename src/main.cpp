@@ -7,11 +7,11 @@
 #endif
 
 // Global variables
-static const Color backgroundColor = Color({32, 33, 63});
-static Camera3D camera = {0};
-static Player player = Player(0.0f, 0.0f, 0.0f);
-static Vector3 playerVelocity = {0.0f, 0.0f, 0.0f};
-static const float playerSpeed = 5.0f;
+const Color backgroundColor = Color({32, 33, 63});
+Camera3D camera = {0};
+Player player = Player(0.0f, 0.0f, 0.0f);
+Vector3 playerVelocity = {0.0f, 0.0f, 0.0f};
+const float playerSpeed = 5.0f;
 
 void InitGame()
 {
@@ -64,7 +64,7 @@ int main()
   emscripten_set_main_loop(UpdateAndDrawFrame, 0, 1);
 #else
   // Run the game loop for desktop platforms
-  SetTargetFPS(60);            // Set our game to run at 60 frames-per-second
+  SetTargetFPS(120);           // Set our game to run at 60 frames-per-second
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
     UpdateAndDrawFrame();
