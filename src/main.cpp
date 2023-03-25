@@ -13,6 +13,13 @@ static Player player = Player(0.0f, 0.0f, 0.0f);
 static Vector3 playerVelocity = {0.0f, 0.0f, 0.0f};
 static const float playerSpeed = 5.0f;
 
+void InitGame()
+{
+  // Load the player model
+  Model playerModel = LoadModel("assets/models/PlayerShip.glb");
+  player.setModel(playerModel);
+}
+
 void UpdateGame()
 {
   auto deltaTime = GetFrameTime();
@@ -43,9 +50,7 @@ int main()
   const int screenHeight = 900;
   InitWindow(screenWidth, screenHeight, getenv("APP_NAME"));
 
-  // Load the player model
-  Model playerModel = LoadModel("assets/models/PlayerShip.glb");
-  player.setModel(playerModel);
+  InitGame();
 
   // Set up camera
   camera.position = (Vector3){0.0f, 10.0f, 10.0f}; // Camera position
