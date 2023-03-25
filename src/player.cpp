@@ -33,7 +33,7 @@ void Player::update(float deltaTime)
   if (IsKeyDown(KEY_DOWN))
     this->velocity.z += 1.0;
 
-  this->velocity = Vector3Scale(Vector3Normalize(this->velocity), 5.0f * deltaTime);
+  this->velocity = Vector3Scale(Vector3Normalize(this->velocity), this->speed * deltaTime);
   this->position = Vector3Add(this->position, this->velocity);
 }
 
