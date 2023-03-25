@@ -15,19 +15,8 @@ static const float playerSpeed = 5.0f;
 
 void UpdateGame()
 {
-  playerVelocity = {0.0f, 0.0f, 0.0f};
-  // Update player position based on arrow key input
-  if (IsKeyDown(KEY_LEFT))
-    playerVelocity.x -= 1.0;
-  if (IsKeyDown(KEY_RIGHT))
-    playerVelocity.x += 1.0;
-  if (IsKeyDown(KEY_UP))
-    playerVelocity.z -= 1.0;
-  if (IsKeyDown(KEY_DOWN))
-    playerVelocity.z += 1.0;
-
-  playerVelocity = Vector3Scale(Vector3Normalize(playerVelocity), playerSpeed * GetFrameTime());
-  player.move(playerVelocity);
+  auto deltaTime = GetFrameTime();
+  player.update(deltaTime);
 }
 
 void DrawGame()

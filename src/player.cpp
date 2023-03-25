@@ -20,10 +20,21 @@ void Player::draw()
   return;
 }
 
-void Player::move(Vector3 velocity)
+void Player::update(float deltaTime)
 {
-  this->position = Vector3Add(this->position, velocity);
-  return;
+  this->velocity = {0.0f, 0.0f, 0.0f};
+  // Update player position based on arrow key input
+  if (IsKeyDown(KEY_LEFT))
+    this->velocity.x -= 1.0;
+  if (IsKeyDown(KEY_RIGHT))
+    this->velocity.x += 1.0;
+  if (IsKeyDown(KEY_UP))
+    this->velocity.z -= 1.0;
+  if (IsKeyDown(KEY_DOWN))
+    this->velocity.z += 1.0;
+
+  this->velocity = Vector3Scale(Vector3Normalize(this->velocity), 5.0f * deltaTime);
+  this->position = Vector3Add(this->position, this->velocity);
 }
 
 void Player::setModel(Model model)
