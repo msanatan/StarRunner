@@ -13,8 +13,9 @@ public:
 private:
   Vector3 position;
   Vector3 velocity;
+  Vector3 rotation;
   Model model;
-  float speed = 5.0f;
+  float speed = 10.0f;
 };
 
 #endif // !PLAYER_H
