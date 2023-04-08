@@ -7,14 +7,19 @@ public:
   Player(float x, float y, float z);
   Player(float x, float y, float z, Model model);
   void draw();
+  void drawCrosshair();
   void update(float deltaTime);
   void setModel(Model model);
+  void setCrosshairTexture(Texture2D texture);
 
 private:
   Vector3 position;
   Vector3 velocity;
+  Vector3 rotation;
+  Vector3 crosshairPosition;
   Model model;
-  float speed = 5.0f;
+  Texture2D crosshairTexture;
+  float speed = 10.0f;
 };
 
 #endif // !PLAYER_H

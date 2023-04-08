@@ -16,8 +16,10 @@ const float playerSpeed = 5.0f;
 void InitGame()
 {
   // Load the player model
-  Model playerModel = LoadModel("assets/models/PlayerShip.glb");
+  Model playerModel = LoadModel("resources/models/PlayerShip.glb");
   player.setModel(playerModel);
+  Texture2D crossHair = LoadTexture("resources/images/Crosshair.png");
+  player.setCrosshairTexture(crossHair);
 }
 
 void UpdateGame()
@@ -31,6 +33,7 @@ void DrawGame()
   BeginDrawing();
   ClearBackground(backgroundColor);
   BeginMode3D(camera);
+  player.drawCrosshair();
   player.draw();
   EndMode3D();
   DrawFPS(10, 10);
@@ -53,11 +56,11 @@ int main()
   InitGame();
 
   // Set up camera
-  camera.position = (Vector3){0.0f, 10.0f, 10.0f}; // Camera position
-  camera.target = (Vector3){0.0f, 0.0f, 0.0f};     // Camera looking at point
-  camera.up = (Vector3){0.0f, 1.0f, 0.0f};         // Camera up vector (rotation towards target)
-  camera.fovy = 45.0f;                             // Camera field-of-view Y
-  camera.projection = CAMERA_PERSPECTIVE;          // Camera mode type
+  camera.position = {0.0f, 0.0f, 15.0f};  // Camera position
+  camera.target = {0.0f, 0.0f, 0.0f};     // Camera looking at point
+  camera.up = {0.0f, 1.0f, 0.0f};         // Camera up vector (rotation towards target)
+  camera.fovy = 45.0f;                    // Camera field-of-view Y
+  camera.projection = CAMERA_PERSPECTIVE; // Camera mode type
 
 // Run the game loop for web
 #if defined(PLATFORM_WEB)
