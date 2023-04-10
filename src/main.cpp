@@ -18,9 +18,9 @@ InputManager inputManager = InputManager();
 void InitGame()
 {
   // Load the player model
-  Model playerModel = LoadModel("resources/models/PlayerShip.glb");
+  Model playerModel = LoadModel("resources\\models\\PlayerShip.glb");
   player.setModel(playerModel);
-  Texture2D crossHair = LoadTexture("resources/images/Crosshair.png");
+  Texture2D crossHair = LoadTexture("resources\\images\\Crosshair.png");
   player.setCrosshairTexture(crossHair);
 }
 
