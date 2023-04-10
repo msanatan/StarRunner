@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "raymath.h"
+#include "inputmanager.h"
 #include "player.h"
 
 #if defined(PLATFORM_WEB)
@@ -12,6 +13,7 @@ Camera3D camera = {0};
 Player player = Player(0.0f, 0.0f, 0.0f);
 Vector3 playerVelocity = {0.0f, 0.0f, 0.0f};
 const float playerSpeed = 5.0f;
+InputManager inputManager = InputManager();
 
 void InitGame()
 {
@@ -25,6 +27,27 @@ void InitGame()
 void UpdateGame()
 {
   auto deltaTime = GetFrameTime();
+  inputManager.update();
+
+  // Handle player movement
+  player.resetMovement();
+  if (inputManager.isMoveUp())
+  {
+    player.moveUp();
+  }
+  if (inputManager.isMoveDown())
+  {
+    player.moveDown();
+  }
+  if (inputManager.isMoveLeft())
+  {
+    player.moveLeft();
+  }
+  if (inputManager.isMoveRight())
+  {
+    player.moveRight();
+  }
+
   player.update(deltaTime);
 }
 
