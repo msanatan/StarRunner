@@ -9,6 +9,7 @@ public:
   void draw();
   void drawCrosshair();
   void update(float deltaTime);
+  Model getModel();
   void setModel(Model model);
   void setCrosshairTexture(Texture2D texture);
   void resetMovement();
