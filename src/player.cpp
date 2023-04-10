@@ -101,6 +101,11 @@ void Player::setCrosshairTexture(Texture2D texture)
   return;
 }
 
+Model Player::getModel()
+{
+  return this->model;
+}
+
 void Player::setModel(Model model)
 {
   this->model = model;

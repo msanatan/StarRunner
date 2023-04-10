@@ -97,6 +97,7 @@ int main()
   }
 #endif
   // De-Initialization
-  CloseWindow(); // Close window and OpenGL context
+  UnloadModel(player.getModel()); // Unload player model
+  CloseWindow();                  // Close window and OpenGL context
   return 0;
 }
