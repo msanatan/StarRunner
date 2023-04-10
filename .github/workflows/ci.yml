@@ -24,7 +24,9 @@ jobs:
           cp raylib-${{ env.RAYLIB_VERSION }}_macos/include/* ./src
       # We build with our specific CI build command, which statically links Raylib
       - name: Build on Mac
-        run: make build-mac-ci
+        run: |
+          make build-mac-ci
+          cp -r resources build
       # We then zip the game, this is needed in Mac so the final .app file is executable
       - name: Zip game build on Mac
         run: cd build && zip -r ${{ env.GAME_NAME }}.zip *
@@ -53,6 +55,7 @@ jobs:
         run: |
           $env:WORKSPACE_DIR = ${env:GITHUB_WORKSPACE}.Replace("\", "/")
           make build-win-ci
+          cp -r resources build
       # We then zip the game with 7z as it's already installed in the shared runner
       - name: Zip game build on Mac
         run: cd build && 7z a -tzip ${{ env.GAME_NAME }}.zip *
@@ -89,6 +92,7 @@ jobs:
         run: |
           source ./emsdk/emsdk_env.sh
           make build-web
+          cp -r resources build
         env:
           WORKSPACE_DIR: ${{ github.workspace }}
       # We then zip the game
