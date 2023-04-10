@@ -56,27 +56,33 @@ void Player::drawCrosshair()
   rlSetTexture(0);
 }
 
-void Player::update(float deltaTime)
+void Player::resetMovement()
 {
   this->velocity = {0.0f, 0.0f, 0.0f};
-  // Update player position based on arrow key input
-  if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
-  {
-    this->velocity.x -= 1.0;
-  }
-  if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
-  {
-    this->velocity.x += 1.0;
-  }
-  if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W))
-  {
-    this->velocity.y += 1.0;
-  }
-  if (IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S))
-  {
-    this->velocity.y -= 1.0;
-  }
+}
 
+void Player::moveUp()
+{
+  this->velocity.y += 1.0;
+}
+
+void Player::moveDown()
+{
+  this->velocity.y -= 1.0;
+}
+
+void Player::moveLeft()
+{
+  this->velocity.x -= 1.0;
+}
+
+void Player::moveRight()
+{
+  this->velocity.x += 1.0;
+}
+
+void Player::update(float deltaTime)
+{
   this->velocity = Vector3Scale(Vector3Normalize(this->velocity), this->speed * deltaTime);
   this->position = Vector3Add(this->position, this->velocity);
 

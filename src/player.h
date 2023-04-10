@@ -11,6 +11,12 @@ public:
   void update(float deltaTime);
   void setModel(Model model);
   void setCrosshairTexture(Texture2D texture);
+  void resetMovement();
+  void moveUp();
+  void moveDown();
+  void moveLeft();
+  void moveRight();
+  void shoot();
 
 private:
   Vector3 position;
