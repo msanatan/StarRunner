@@ -1,3 +1,4 @@
+#include <iostream>
 #include "raylib.h"
 #include "raymath.h"
 #include "inputmanager.h"
@@ -18,9 +19,12 @@ InputManager inputManager = InputManager();
 void InitGame()
 {
   // Load the player model
-  Model playerModel = LoadModel("resources/models/PlayerShip.glb");
+  std::string workingDir = GetWorkingDirectory();
+  std::string playerModelPath = workingDir + "/resources/models/PlayerShip.glb";
+  Model playerModel = LoadModel(playerModelPath.c_str());
   player.setModel(playerModel);
-  Texture2D crossHair = LoadTexture("resources/images/Crosshair.png");
+  std::string crossHairPath = workingDir + "/resources/images/Crosshair.png";
+  Texture2D crossHair = LoadTexture(crossHairPath.c_str());
   player.setCrosshairTexture(crossHair);
 }
 
