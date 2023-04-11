@@ -34,7 +34,7 @@ build-win-ci: $(BUILDDIR)
 	$(CXX) $(CFLAGS) -static-libgcc -static-libstdc++ -static -lpthread $(INCFLAGS_CI_WIN) $(SRC) -o $(TARGET_WIN) $(LDFLAGS_WIN)
 
 build-web: $(BUILDDIR)
-	$(EXX) $(EXXFLAGS) $(SRC) -DPLATFORM_WEB $(INCFLAGS_CI_WEB) -o $(TARGET_WEB)
+	$(EXX) $(EXXFLAGS) $(SRC) -DPLATFORM_WEB $(INCFLAGS_CI_WEB) -o $(TARGET_WEB) --preload-file resources
 
 run-mac:
 	$(TARGET_MAC)
