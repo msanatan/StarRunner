@@ -3,16 +3,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float playerSpeed = 5.0f;
+    public float playerSpeed = 10.0f;
+    public float xRange = 12.0f;
+    public float yRange = 7.0f;
+    public float positionPitchFactor = -2f;
+    public float positionYawFactor = 2f;
+    public float controlPitchFactor = -10f;
+    public float controlRollFactor = -20f;
     private CustomControls input = null;
+    private float xThrow;
+    private float yThrow;
     private Vector3 playerVelocity = Vector3.zero;
-    private Rigidbody rb = null;
-    private Vector3 playerRotation = Vector3.zero;
+    private Vector3 playerPosition = Vector3.zero;
+    private Vector3 clampedPosition = Vector3.zero;
 
     private void Awake()
     {
         input = new CustomControls();
-        rb = GetComponent<Rigidbody>();
     }
 
     private void OnEnable()
@@ -31,24 +38,43 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
     {
-        playerVelocity = value.ReadValue<Vector3>();
+        xThrow = value.ReadValue<Vector3>().x;
+        yThrow = value.ReadValue<Vector3>().y;
     }
 
     private void OnMovementCancelled(InputAction.CallbackContext value)
     {
-        playerVelocity = Vector3.zero;
+        xThrow = 0f;
+        yThrow = 0f;
     }
 
-    private void FixedUpdate()
+    private void ProcessTranslation()
     {
-        rb.velocity = playerVelocity.normalized * playerSpeed;
+        playerVelocity.x = xThrow;
+        playerVelocity.y = yThrow;
+        playerPosition = transform.position + (playerVelocity * playerSpeed * Time.deltaTime);
+        clampedPosition.x = Mathf.Clamp(playerPosition.x, -xRange, xRange);
+        clampedPosition.y = Mathf.Clamp(playerPosition.y, -yRange, yRange);
+        clampedPosition.z = playerPosition.z;
+        transform.position = clampedPosition;
+    }
+
+    private void ProcessRotation()
+    {
+        float pitchDueToPosition = transform.position.y * positionPitchFactor;
+        float pitchDueToControlThrow = yThrow * controlPitchFactor;
+
+        float pitch = pitchDueToPosition + pitchDueToControlThrow;
+        float yaw = transform.position.x * positionYawFactor;
+        float roll = xThrow * controlRollFactor;
+
+        transform.rotation = Quaternion.Euler(pitch, yaw, roll);
+
     }
 
     private void Update()
     {
-        playerRotation.x = rb.velocity.y / 2;
-        playerRotation.y = -rb.velocity.x / 2;
-        playerRotation.z = -rb.velocity.x * 2;
-        transform.Rotate(playerRotation * Time.deltaTime);
+        ProcessTranslation();
+        ProcessRotation();
     }
 }
