@@ -39,20 +39,9 @@ public partial class @CustomControls: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""f72a77a5-47a0-4f0e-957e-227663f64015"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""WASD"",
                     ""id"": ""3abf3eca-2361-46d2-b4ac-3ed62cbf29a7"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""3DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -129,7 +118,7 @@ public partial class @CustomControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Arrow Keys"",
                     ""id"": ""1918792e-a480-46ba-ad4d-d0dd74dbc4ce"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""3DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -206,7 +195,7 @@ public partial class @CustomControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Controller D-Pad"",
                     ""id"": ""14eaa090-c805-41a1-b935-5f774a739d65"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""3DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
