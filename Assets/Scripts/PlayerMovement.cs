@@ -3,19 +3,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float playerSpeed = 10.0f;
-    public float xRange = 12.0f;
-    public float yRange = 7.0f;
-    public float positionPitchFactor = -2f;
-    public float positionYawFactor = 2f;
-    public float controlPitchFactor = -10f;
-    public float controlRollFactor = -20f;
+    [SerializeField]
+    private float playerSpeed = 10.0f;
+    [SerializeField]
+    private float xRange = 12.0f;
+    [SerializeField]
+    private float yRange = 7.0f;
+    [SerializeField]
+    private float positionPitchFactor = -2f;
+    [SerializeField]
+    private float positionYawFactor = 2f;
+    [SerializeField]
+    private float controlPitchFactor = -10f;
+    [SerializeField]
+    private float controlRollFactor = -20f;
     private CustomControls input = null;
     private float xThrow;
     private float yThrow;
     private Vector3 playerVelocity = Vector3.zero;
     private Vector3 playerPosition = Vector3.zero;
     private Vector3 clampedPosition = Vector3.zero;
+
 
     private void Awake()
     {
