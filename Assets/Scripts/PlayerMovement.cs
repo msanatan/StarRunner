@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float xRange = 12.0f;
     [SerializeField]
-    private float yRange = 7.0f;
+    private float yRange = 4.0f;
     [SerializeField]
     private float positionPitchFactor = -2f;
     [SerializeField]
@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private float controlPitchFactor = -10f;
     [SerializeField]
     private float controlRollFactor = -20f;
-    private CustomControls input = null;
+    private CustomControls playerControls;
+    private InputAction move;
     private float xThrow;
     private float yThrow;
     private Vector3 playerVelocity = Vector3.zero;
@@ -27,21 +28,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        input = new CustomControls();
+        playerControls = new CustomControls();
+        move = playerControls.Player.Movement;
     }
 
     private void OnEnable()
     {
-        input.Enable();
-        input.Player.Movement.performed += OnMovementPerformed;
-        input.Player.Movement.canceled += OnMovementCancelled;
+        move.Enable();
+        move.performed += OnMovementPerformed;
+        move.canceled += OnMovementCancelled;
     }
 
     private void OnDisable()
     {
-        input.Disable();
-        input.Player.Movement.performed -= OnMovementPerformed;
-        input.Player.Movement.canceled -= OnMovementCancelled;
+        move.Disable();
+        move.performed -= OnMovementPerformed;
+        move.canceled -= OnMovementCancelled;
     }
 
     private void OnMovementPerformed(InputAction.CallbackContext value)
