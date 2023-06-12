@@ -7,16 +7,21 @@ public class PlayerAttack : MonoBehaviour
 {
     [SerializeField]
     private GameObject laser;
+    [SerializeField]
+    float laserWaitTime = 1.0f;
     private CustomControls playerControls;
     private InputAction fire;
-    private float cooldown = 0.0f;
-    private float maxCooldown = 8.0f;
+    private Transform leftLaserSpawnPoint;
+    private Transform rightLaserSpawnPoint;
+    private bool canShoot = true;
 
 
     private void Awake()
     {
         playerControls = new CustomControls();
         fire = playerControls.Player.Fire;
+        leftLaserSpawnPoint = transform.Find("LeftLaserSpawnPoint");
+        rightLaserSpawnPoint = transform.Find("RightLaserSpawnPoint");
     }
 
     private void OnEnable()
@@ -33,14 +38,22 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnFire(InputAction.CallbackContext context)
     {
-        if (cooldown <= 0.0f)
+        if (canShoot)
         {
-            cooldown = maxCooldown * Time.deltaTime;
-            Debug.Log("Fire");
+            canShoot = false;
+            var leftLaserInstance = Instantiate(laser, leftLaserSpawnPoint.position, laser.transform.rotation);
+            var rightLaserInstance = Instantiate(laser, rightLaserSpawnPoint.position, laser.transform.rotation);
+            leftLaserInstance.SetActive(true);
+            rightLaserInstance.SetActive(true);
+            leftLaserInstance.GetComponent<Rigidbody>().velocity = leftLaserSpawnPoint.forward * 12;
+            rightLaserInstance.GetComponent<Rigidbody>().velocity = rightLaserSpawnPoint.forward * 12;
+            StartCoroutine(EnableShoot());
         }
-        else
-        {
-            cooldown -= Time.deltaTime;
-        }
+    }
+
+    IEnumerator EnableShoot()
+    {
+        yield return new WaitForSeconds(laserWaitTime);
+        canShoot = true;
     }
 }
