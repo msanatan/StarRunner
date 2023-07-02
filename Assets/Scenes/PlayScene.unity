@@ -741,3 +741,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laser: {fileID: 3807730418843986605, guid: 541dced885602450ea997fca70eb11b7, type: 3}
+  laserWaitTime: 0.5
