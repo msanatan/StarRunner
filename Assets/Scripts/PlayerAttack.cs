@@ -9,6 +9,8 @@ public class PlayerAttack : MonoBehaviour
     private GameObject laser;
     [SerializeField]
     float laserWaitTime = 1.0f;
+    [SerializeField]
+    float laserSpeed = 20;
     private CustomControls playerControls;
     private InputAction fire;
     private Transform leftLaserSpawnPoint;
@@ -45,8 +47,8 @@ public class PlayerAttack : MonoBehaviour
             var rightLaserInstance = Instantiate(laser, rightLaserSpawnPoint.position, laser.transform.rotation);
             leftLaserInstance.SetActive(true);
             rightLaserInstance.SetActive(true);
-            leftLaserInstance.GetComponent<Rigidbody>().velocity = leftLaserSpawnPoint.forward * 12;
-            rightLaserInstance.GetComponent<Rigidbody>().velocity = rightLaserSpawnPoint.forward * 12;
+            leftLaserInstance.GetComponent<Rigidbody>().velocity = leftLaserSpawnPoint.forward * laserSpeed;
+            rightLaserInstance.GetComponent<Rigidbody>().velocity = rightLaserSpawnPoint.forward * laserSpeed;
             StartCoroutine(EnableShoot());
         }
     }
